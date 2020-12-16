@@ -1,0 +1,75 @@
+{% load static%}
+<!DOCTYPE html>
+<style>
+    body{text-align: center;}
+    #Time,#p{
+				font-size: 50px;
+			}
+    #message{
+        font-size: 50px;
+    }
+    img{display: inline-block; width: 100%; max-width: 100%; height: auto;}
+    .toolbar {height: 50px; width:100%; margin-left: 0;background: #ffffff url({%static "bk3.jpg"%}); position: fixed; top: 0; margin-bottom: 5px;}
+    .toolbar ul {width: auto;list-style-type: none;white-space:nowrap;overflow: hidden;margin-left: 5%;padding: 0;}
+    .toolbar li { float:left; margin-right:2%; position: relative; overflow: hidden;vertical-align: middle;}
+    .toolbar li a{ display: block; color:rgb(156, 16, 16); text-align: center; padding: 3px; overflow: hidden; text-decoration: none;}
+</style>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>倒计时后跳页面</title>
+		<script>
+			function countDown(){
+				//获取初始时间
+				var time = document.getElementById("Time");
+				var href = document.getElementById("jump").href;
+				//获取到id为time标签中的数字时间
+				if(time.innerHTML == 0){
+					//等于0时清除计时，并跳转该指定页面
+					window.location.href=href;
+				}else{
+					time.innerHTML = time.innerHTML-1;
+				}
+			}
+			//1000毫秒调用一次
+			window.setInterval("countDown()",1000);
+		</script>
+	</head>
+	<body style="background: #ffffff url({% static "bk3.jpg" %});">
+		<div class="toolbar">
+			<ul>
+				<li>
+					<a href="/">湘大二手市场</a>
+				</li>
+				<li>
+					<a href="/search">搜索</a>
+				</li>
+				<li>
+					<a href="/studentinfo">个人信息</a>
+				</li>
+
+				<li>
+					{% if not request.session.user %}
+						<a href="/Login">登录</a>
+					{% else %}
+						<a>用户 ： {{request.session.user}}</a>
+					{% endif %}
+				</li>
+				{% if request.session.user %}
+				<li>
+					<a href="/Login/reLogin">注销</a>
+				</li>
+				{% endif %}
+				<li style="float:right; margin-right:40px;">
+					<a href="/messages">信息</a>
+				</li>
+			</ul>
+		</div>
+        <p id="message">{{message}}</p>
+        <div class="countDown">
+            <p>倒计时<p id="Time">3</p>后自动跳转</p>
+        </div>
+
+        <a href={{href}} id="jump">如未能自动跳转 请点击此处</a>
+	</body>
+</html>

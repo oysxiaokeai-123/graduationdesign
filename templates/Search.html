@@ -1,0 +1,55 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>SearchPage</title>
+</head>
+<style>
+	body{text-align: center}
+	.toolbar {height: 50px; width:100%; margin-left: 0; background: #ffffff url({%static "bk3.jpg"%}); position: fixed; top: 0; margin-bottom: 5px;}
+    .toolbar ul {width: auto;list-style-type: none;white-space:nowrap;overflow: hidden;margin-left: 5%;padding: 0;}
+    .toolbar li {float:left; margin-right:2%; position: relative; overflow: hidden;vertical-align: middle;}
+    .toolbar li a{display: block; color:rgb(156, 16, 16); text-align: center; padding: 3px; overflow: hidden; text-decoration: none;}
+</style>
+<body style="background: #ffffff url({% static "bk3.jpg" %});">
+	<div class="toolbar">
+		<ul>
+			<li>
+				<a href="/">湘大二手交易市场</a>
+			</li>
+			<li>
+				<a href="/search">搜索</a>
+			</li>
+			<li>
+				<a href="/studentinfo">个人信息</a>
+			</li>
+
+			<li>
+				{% if not request.session.user %}
+					<a href="/Login">登录</a>
+				{% else %}
+					<a>用户 ： {{request.session.user}}</a>
+				{% endif %}
+			</li>
+			{% if request.session.user %}
+			<li>
+				<a href="/Login/reLogin">注销</a>
+			</li>
+			{% endif %}
+			<li style="float:right; margin-right:40px;">
+				<a href="/messages">信息</a>
+			</li>
+		</ul>
+	</div>
+	<div class="SearchInput" style="margin-top:200px">
+		<p style="text-align:center; font-size: 50px; color: rgb(22, 136, 117);">二手交易市场</p>
+		<form action="searchResult" method="get">
+			<div class="searchInput">
+				<input type="text" name="searchKey">
+				<input type="submit" value="起飞">
+			</div>
+		</form>
+	</div>
+</body>
+</html>

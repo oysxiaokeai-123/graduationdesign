@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>上传商品</title>
+</head>
+<style>
+    .toolbar {height: 50px; width:100%; margin-left: 0; background: #ffffff url({%static "bk3.jpg"%}); position: fixed; top: 0; margin-bottom: 5px;}
+    .toolbar ul{width: auto; list-style-type: none; white-space:nowrap; overflow: hidden; margin-left: 5%; padding: 0;}
+    .toolbar li { float:left; margin-right:2%; position: relative; overflow: hidden;vertical-align: middle;}
+    .toolbar li a{ display: block; color:rgb(156, 16, 16); text-align: center; padding: 3px; overflow: hidden; text-decoration: none;}
+</style>
+<style type="text/css">
+            #preview {
+                display: inline-block;
+                width: 100px;
+                height: 100px;
+                position: relative;
+                 background-repeat: no-repeat;
+                background-size: cover;
+            }
+
+            #itemImage {
+                width: 100%;
+                height: 100%;
+                opacity: 0;
+                position: absolute;
+                left: 0;
+                top: 0;
+                cursor: pointer;
+                z-index: 5;
+            }
+</style>
+<body style="background: #ffffff url({% static "bk3.jpg" %});">
+    <div class="toolbar">
+		<ul>
+			<li>
+				<a href="/">湘大二手交易市场</a>
+			</li>
+			<li>
+				<a href="/search">搜索</a>
+			</li>
+			<li>
+				<a href="/studentinfo">个人信息</a>
+			</li>
+
+			<li>
+				{% if not request.session.user %}
+					<a href="/Login">登录</a>
+				{% else %}
+					<a>用户 ： {{request.session.user}}</a>
+				{% endif %}
+			</li>
+			{% if request.session.user %}
+			<li>
+				<a href="/login/reLogin">注销</a>
+			</li>
+			{% endif %}
+			<li style="float:right; margin-right:40px;">
+				<a href="/messages">信息</a>
+			</li>
+		</ul>
+	</div>
+
+    <div style="margin-top:150px; text-align:center;" class="main">
+        <form action="insertResult" method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+            <p>商品名 &nbsp&nbsp<input type="text" name="itemName"></p>
+
+            <p>价 &nbsp &nbsp 格 &nbsp<input type="text" name="itemPrice"></p>
+
+            <p>商品描述 <input type="text" name="itemDescription"></p>
+
+			  商品图片 
+			<div id="preview" style="width:100px;height:100px;border:1px solid;">
+            	<input type="file" accept="image/*" id="itemImage" name="itemImage"/>
+        	</div>
+			<br>
+			<script type="text/javascript">
+            var preview = document.querySelector('#preview');
+            var eleFile = document.querySelector('#itemImage');
+            eleFile.addEventListener('change', function() {
+                var file = this.files[0];
+                // 确认选择的文件是图片
+                if(file.type.indexOf("image") == 0) {
+                    var reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = function(e) {
+                        // 图片base64化
+                        var newUrl = this.result;
+                        preview.style.backgroundImage = 'url(' + newUrl + ')';
+                    };
+                }
+            });
+            </script>
+            &nbsp;
+            <input type="submit" value="提交">
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,92 @@
+{% load static%}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>注册</title>
+<style>
+	body{text-align: center;}
+	img{display: inline-block; width: 100%; max-width: 100%; height: auto;}
+	.toolbar {height: 50px; width:100%; margin-left: 0; background: #ffffff url({%static "bk3.jpg"%}); position: fixed; top: 0; margin-bottom: 5px;}
+    .toolbar ul{width: auto; list-style-type: none; white-space:nowrap; overflow: hidden; margin-left: 5%; padding: 0;}
+    .toolbar li { float:left; margin-right:2%; position: relative; overflow: hidden;vertical-align: middle;}
+    .toolbar li a{ display: block; color:rgb(156, 16, 16); text-align: center; padding: 3px; overflow: hidden; text-decoration: none;}
+</style>
+</head>
+<body style="background: #ffffff url({% static "bk3.jpg" %});">
+	<div class="toolbar">
+		<ul>
+			<li>
+				<a href="/">湘大二手交易市场</a>
+			</li>
+			<li>
+				<a href="/search">搜索</a>
+			</li>
+			<li>
+				<a href="/studentinfo">个人信息</a>
+			</li>
+			<li>
+				{% if not request.session.user %}
+					<a href="/Login">登录</a>
+				{% else %}
+					<a>用户 ： {{request.session.user}}</a>
+				{% endif %}
+			</li>
+		</ul>
+	</div>
+	<p style="margin-top:100px">注册</p>
+	<br>
+	<div class="Register Input">
+		<form action="registerResult" method="POST">
+			{% csrf_token %}
+			<p>账&ensp;&ensp;号&ensp;&ensp;<input type="text" name="id"></p>
+			<p>密&ensp;&ensp;码&ensp;&ensp;<input type="password" name="password"></p>
+			<p>确认密码 <input type="password" name="passwordConfirm"></p>
+			<br />
+			<p>用户名&ensp; <input type="text" name="userName"></p>
+			<p>
+				生&ensp;日
+				<select name="year" id="year" >
+					<script>
+					for(i=1900;i<2020;i++){
+					document.write("<option value='"+i+"'>"+i+"</option>")
+					}
+					</script>
+				</select>
+				<select name="month" id="month" >
+					<script>
+					for(i=1;i<=12;i++){
+					document.write("<option value='"+i+"'>"+i+"</option>")
+					}
+					</script>
+				</select>
+				<select name="day" id="day" >
+					<script>
+					for(i=1;i<31;i++){
+					document.write("<option value='"+i+"'>"+i+"</option>")
+					}
+					</script>
+				</select>
+			</p>
+			<p>性&ensp;&ensp;别
+				<label><input name="Sex" type="radio" value="Male"/>Male</label>
+				<label><input name="Sex" type="radio" value="Female"/>Female</label>
+			</p>
+			<p>大&ensp;学 <input type="text" name="college"></p>
+			<p>地&ensp;址 <input type="text" name="address"></p>
+			<p>Q&ensp;Q &ensp;<input type="text" name="qq"></p>
+			<p>手&ensp;机&ensp;<input type="text" name="tel"></p>
+			<p>E-mail <input type="text" name="email"></p>
+			<input type="submit" value="提交">
+		</form>
+		{% if messages %}
+        <script>
+            {% for msg in messages %}
+                alert('{{ msg.message }}');
+            {% endfor %}
+        </script>
+   		 {% endif %} 
+	</div>
+	<br>
+</body>
+</html>

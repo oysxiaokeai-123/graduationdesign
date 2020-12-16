@@ -1,0 +1,73 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品信息</title>
+</head>
+<style>
+    dl {border:1px solid #000000;}
+	.toolbar {height: 50px; width:100%; margin-left: 0; background: #ffffff url({%static "bk3.jpg"%}); position: fixed; top: 0; margin-bottom: 5px;}
+    .toolbar ul {width: auto;list-style-type: none;white-space:nowrap;overflow: hidden;margin-left: 5%;padding: 0;}
+    .toolbar li { float:left; margin-right:2%; position: relative; overflow: hidden;vertical-align: middle;}
+    .toolbar li a{ display: block; color:rgb(156, 16, 16); text-align: center; padding: 3px; overflow: hidden; text-decoration: none;}
+</style>
+<body style="background: #ffffff url({% static "bk3.jpg" %});">
+    <div class="toolbar">
+		<div class="toolbar">
+		<ul>
+			<li>
+				<a href="/">湘大二手交易市场</a>
+			</li>
+			<li>
+				<a href="/search">搜索</a>
+			</li>
+			<li>
+				<a href="/studentinfo">个人信息</a>
+			</li>
+
+			<li>
+				{% if not request.session.user %}
+					<a href="/Login">登录</a>
+				{% else %}
+					<a>用户 ： {{request.session.user}}</a>
+				{% endif %}
+			</li>
+			{% if request.session.user %}
+			<li>
+				<a href="/Login/reLogin">注销</a>
+			</li>
+			{% endif %}
+			<li style="float:right; margin-right:40px;">
+				<a href="/messages">信息</a>
+			</li>
+		</ul>
+	</div>
+    <center>
+        <div class="itemInfo" style="margin: 200px; ">
+            <div class="itemImage" style="float:left; margin-left:50px;">
+                <img src="{{image}}" alt="图片" width="auto" height="300px">
+            </div>
+            <div class="itemInfo" style="float:right; margin-right:200px; font-size:20px;">
+                <p id="itemName">商品名：{{name}}</p>
+                <p id="itemPrice">商品价格：{{price}}</p>
+                <p id="itemDescription">商品描述：{{description}}</p>
+                <p id="itemOwner">
+                    <a href="/showInfo/?id={{ownerID}}">出售人：{{ownerName}}</a>
+                </p>
+				{% if status %}
+				<a href="finishPurchase/?id={{ID}}&sellerID={{ownerID}}">
+					<button>确认购买</button>
+				</a>
+				{% else %}
+				<p>该商品已被购买</p>
+				{% endif%}
+            </div>
+        </div>
+
+
+    </center>
+
+
+</body>
+</html>

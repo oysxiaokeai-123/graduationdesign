@@ -1,0 +1,63 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>信息</title>
+    <style type="text/css">
+	.toolbar {height: 50px; width:100%; margin-left: 0; background: #ffffff url({%static "bk3.jpg"%}); position: fixed; top: 0; margin-bottom: 5px;}
+    .toolbar ul {width: auto;list-style-type: none;white-space:nowrap;overflow: hidden;margin-left: 5%;padding: 0;}
+    .toolbar li { float:left; margin-right:2%; position: relative; overflow: hidden;vertical-align: middle;}
+    .toolbar li a{ display: block; color:rgb(156, 16, 16); text-align: center; padding: 3px; overflow: hidden; text-decoration: none;}
+	.PersonalInfo {font-size:15px;}
+</style>
+</head>
+<body style="background: #ffffff url({% static "bk3.jpg" %});">
+    <div class="toolbar">
+		<ul class="leftToolbar">
+			<li>
+				<a href="/">湘大二手交易市场</a>
+			</li>
+			<li>
+				<a href="/search">搜索</a>
+			</li>
+			<li>
+				<a href="/studentinfo">个人信息</a>
+			</li>
+			<li>
+				{% if not request.session.user %}
+					<a href="/Login">登录</a>
+				{% else %}
+					<a>用户 ： {{request.session.user}}</a>
+				{% endif %}
+			</li>
+			{% if request.session.user %}
+			<li>
+				<a href="/Login/reLogin">注销</a>
+			</li>
+			{% endif %}
+		
+		  
+			<li style="float:right; margin-right:40px;">
+				<a href="/messages">信息</a>
+			</li>
+		</ul>
+	</div>
+
+    <div class="purchaseMessages" style="margin-top:100px;">
+		<p style="text-align:center">你有 {{ sellMessageLen }} 条出售请求</p>
+		{% for message in sellMessage %}
+		<div class="messageDetail" style="border-style:double; text-align:center; width:500px; float:left; margin:10px;">
+			<p>买家: <a href="/showInfo/?id={{ message.buyer }}"> {{message.buyer}}</a></p>
+			<a href="/itemInfo/?id={{ message.commodityID }}">
+				<img src="{{message.commodityImage}}" alt="图片" width="100px" height="100px">
+				<p>商品编号: {{ message.commodityID }}</p>
+				<p>商品名称: {{ message.commodityName }}</p>
+				<p>价格: {{ message.commodityPrice }}</p>
+			</a>
+			<a href="messageConfirm/?TID={{message.TID}}"><button>确认出售</button></a>
+		</div>
+		{% endfor %}
+	</div>
+</body>
+</html>

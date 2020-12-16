@@ -1,0 +1,53 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>登录</title>
+</head>
+<style>
+	body{text-align: center}
+	img{display: inline-block; width: 100%; max-width: 100%; height: auto;}
+	.toolbar {height: 50px; width:100%; margin-left: 0; background: #ffffff url({%static "bk3.jpg"%}); position: fixed; top: 0; margin-bottom: 5px;}
+    .toolbar ul{width: auto; list-style-type: none; white-space:nowrap; overflow: hidden; margin-left: 5%; padding: 0;}
+    .toolbar li { float:left; margin-right:2%; position: relative; overflow: hidden;vertical-align: middle;}
+    .toolbar li a{ display: block; color:rgb(156, 16, 16); text-align: center; padding: 3px; overflow: hidden; text-decoration: none;}
+</style>
+<body style="background: #ffffff url({% static "bk3.jpg" %});">
+	<div class="toolbar">
+		<ul>
+			<li>
+				<a href="/">湘大二手交易市场</a>
+			</li>
+			<li>
+				<a href="/search">搜索</a>
+			</li>
+			<li>
+				<a href="/studentinfo">个人信息</a>
+			</li>
+			<li>
+				{% if not request.session.user %}
+					<a href="/Login">登录</a>
+				{% else %}
+					<a>用户 ： {{request.session.user}}</a>
+				{% endif %}
+			</li>
+		</ul>
+	</div>
+	<p style="margin-top:100px">登录</p>
+	<br>
+	<div class="Login Input" >
+		<form action="loginResult" method="post">
+			{% csrf_token %}
+			<p>用户名	<input type="text" name="id" /></p>
+			<p>密&ensp;&ensp;码	<input type="password" name="password" /></p>
+			
+			<input type="submit" value="提交">  
+		</form>
+		<br>
+		<a href="/Register"><button>注册</button></a>
+	</div>
+	
+	<br>
+</body>
+</html>

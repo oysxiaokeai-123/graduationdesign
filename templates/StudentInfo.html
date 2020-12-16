@@ -1,0 +1,138 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>个人信息</title>
+<style type="text/css">
+	dl { width: 240px;border:1px solid rgb(156, 16, 16);}
+	.toolbar {height: 50px; width:100%; margin-left: 0; background: #ffffff url({%static "bk3.jpg"%}); position: fixed; top: 0; margin-bottom: 5px;}
+    .toolbar ul {width: auto;list-style-type: none;white-space:nowrap;overflow: hidden;margin-left: 5%;padding: 0;}
+    .toolbar li { float:left; margin-right:2%; position: relative; overflow: hidden;vertical-align: middle;}
+	.toolbar li a{ display: block; color:rgb(156, 16, 16); text-align: center; padding: 3px; overflow: hidden; text-decoration: none;}
+	.modifyinfo:visited{color: rgb(156, 16, 16);}
+	.button1:visited{color:rgb(156, 16, 16);margin-left: 3%;}
+	.PersonalInfoList {list-style-type: none;color: rgb(156,16,16);margin-left: 3%;}
+	.InfoHead {font-size:20px;}
+	.InfoContent {font-size: 15px; margin-left:20px;}
+</style>
+</head>
+<body style="background: #ffffff url({% static "bk3.jpg" %});">
+	
+	<div class="toolbar">
+		<ul>
+			<li>
+				<a href="/">湘大二手交易市场</a>
+			</li>
+			<li>
+				<a href="/search">搜索</a>
+			</li>
+			<li>
+				<a href="/studentinfo">个人信息</a>
+			</li>
+
+			<li>
+				{% if not request.session.user %}
+					<a href="/Login">登录</a>
+				{% else %}
+					<a>用户 ： {{request.session.user}}</a>
+				{% endif %}
+			</li>
+			{% if request.session.user %}
+			<li>
+				<a href="/Login/reLogin">注销</a>
+			</li>
+			{% endif %}
+			<li style="float:right; margin-right:40px;">
+				<a href="/messages">信息</a>
+			</li>
+		</ul>
+	</div>
+	<div class="PersonalInfo" style="margin-top:100px">
+		<ul class="PersonalInfoList">
+			<li>
+				<span class="InfoHead">账号：</span>
+				<span class="InfoContent">{{ datas.Account }}</span>
+			</li>
+			<li>
+				<span class="InfoHead">用户名：</span>
+				<span class="InfoContent">{{ datas.Name }}</span>
+			</li>
+			<li>
+				<span class="InfoHead">生日：</span>
+				<span class="InfoContent">{{ datas.Birthday }}</span>
+			</li>
+			<li>
+				<span class="InfoHead">性别：</span>
+				<span class="InfoContent">{{ datas.Sex }}</span>
+			</li>
+			<li>
+				<span class="InfoHead">学校：</span>
+				<span class="InfoContent">{{ datas.College }}</span>
+			</li>
+			<li>
+				<span class="InfoHead">地址：</span>
+				<span class="InfoContent">{{ datas.Address }}</span>
+			</li>
+			<li>
+				<span class="InfoHead">电话：</span>
+				<span class="InfoContent">{{ datas.Telephone }}</span>
+			</li>
+			<li>
+				<span class="InfoHead">邮箱：</span>
+				<span class="InfoContent">{{ datas.Email }}</span>
+			</li>
+			<li>
+				<span class="InfoHead">QQ ：</span>
+				<span class="InfoContent">{{ datas.QQ }}</span>
+			</li>
+		</ul>
+	</div>
+	 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<a href="/modifyInfo/?account={{ datas.Account }}" class="link">修改个人信息</a>
+	<script type="text/javascript">
+	function Confirm(){
+		if(confirm("删除后无法恢复，是否删除"))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	</script>
+
+	<div class="selfItemMessages">
+		<p style="text-align:center;color: rgb(156,16,16);">你有 {{ len }} 件商品正在出售</p>
+		<form action="DeleteItem" method="POST">
+			{% csrf_token %}
+			{% for good in goods %}
+			<div class="list_box">
+				<dl style="margin-left: 3%;">
+					<dt><label><input name="choose" type="checkbox" value={{ good.ID }} style="padding-right: 10px;";/></label></dt>
+					<dt>
+						<a href="/itemInfo/?id={{ good.ID }}">
+							<img src="{{good.image}}" alt="图片" width="100px" height="auto">
+							<p>商品编号: {{ good.ID }}</p>
+							<p>商品名称: {{ good.Name }}</p>
+							<p>价格: {{ good.Price }}</p>
+						</a>
+					</dt>
+					<a href="/modifyGoods/?id={{ good.ID }}">修改</a>
+				</dl>
+
+			</div>
+			{% endfor %}
+			&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<input type="submit" value="删除" onclick="return Confirm();">
+		</form>
+		<br>
+
+		&ensp;&ensp;&ensp;&ensp;&ensp;<a href="/insertgoods" >
+				<button >上传商品</button>
+		</a>
+		<br>
+	</div>
+
+
+</body>
+</html>
